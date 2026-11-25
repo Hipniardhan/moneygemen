@@ -13,6 +13,10 @@ return Application::configure(basePath: dirname(__DIR__))
     ->withMiddleware(function (Middleware $middleware) {
         $middleware->redirectGuestsTo('/masuk');
         $middleware->redirectUsersTo('/');
+
+        $middleware->append(\App\Http\Middleware\SecurityHeaders::class);
+        // ganti kata sandi / reset admin otomatis mengeluarkan perangkat lain
+        $middleware->web(append: [\Illuminate\Session\Middleware\AuthenticateSession::class]);
     })
     ->withExceptions(function (Exceptions $exceptions) {
         //

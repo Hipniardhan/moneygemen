@@ -30,7 +30,8 @@ class Register extends Component
 
         $this->validate([
             'name' => 'required|string|max:50',
-            'email' => 'required|email|max:190|unique:users,email',
+            // domain demo.moneygemen dicadangkan untuk akun demo bersama
+            'email' => ['required', 'email', 'max:190', 'unique:users,email', 'not_regex:/@demo\.moneygemen$/i'],
             'password' => 'required|string|min:8|max:100',
         ], [
             'name.required' => 'Nama wajib diisi.',
@@ -38,6 +39,7 @@ class Register extends Component
             'email.required' => 'Email wajib diisi.',
             'email.email' => 'Format email tidak valid.',
             'email.unique' => 'Email ini sudah terdaftar.',
+            'email.not_regex' => 'Email ini tidak bisa dipakai.',
             'password.required' => 'Kata sandi wajib diisi.',
             'password.min' => 'Kata sandi minimal 8 karakter.',
         ]);

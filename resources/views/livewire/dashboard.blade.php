@@ -1,5 +1,5 @@
-<div class="stack-lg">
-    <div class="row-between">
+<div class="stack-lg dash">
+    <div class="row-between dash-head">
         <h1 class="page-title">Halo, {{ auth()->user()->name }}</h1>
         <div class="seg seg-sm" role="tablist" aria-label="Periode">
             <button type="button" wire:click="setPeriod('month')" class="{{ $period === 'month' ? 'on' : '' }}">Bulan ini</button>
@@ -31,7 +31,7 @@
         </div>
     </section>
 
-    <section class="card" x-data="{ sel: null }">
+    <section class="card chart-card" x-data="{ sel: null }">
         <h2 class="section-title">Akumulasi per kategori</h2>
 
         @if ($chart['income']->isEmpty() && $chart['expense']->isEmpty())
@@ -70,7 +70,7 @@
         <span aria-hidden="true">›</span>
     </a>
 
-    <section class="card">
+    <section class="card top-card">
         <h2 class="section-title">5 pengeluaran terbesar</h2>
         @forelse ($top as $row)
             <div class="bar-row">
@@ -85,7 +85,7 @@
         @endforelse
     </section>
 
-    <section>
+    <section class="recent">
         <div class="row-between">
             <h2 class="section-title">Transaksi terbaru</h2>
             <a href="{{ route('transactions') }}" class="link-sm">Lihat semua</a>

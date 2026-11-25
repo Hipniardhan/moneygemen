@@ -46,6 +46,26 @@ Catatan Windows: bila `push:keys` gagal "Unable to create the key", set `OPENSSL
 
 Setelah mengubah `.env`, jalankan ulang `php artisan config:cache`.
 
+## Keamanan
+
+Sudah diterapkan di kode:
+- **Header keamanan** (`app/Http/Middleware/SecurityHeaders.php`): CSP, `X-Frame-Options: DENY`, `nosniff`,
+  `Referrer-Policy`, `Permissions-Policy`, HSTS (hanya di HTTPS), `Cache-Control: no-store` untuk halaman setelah login,
+  dan `X-Powered-By` dihapus. Bila nanti memakai skrip/gambar dari domain lain, izinkan dulu di `CSP` pada file itu.
+- **HTTPS dipaksa** lewat `public/.htaccess` dan `URL::forceScheme` di produksi. File tersembunyi (`.env`, `.git`) diblokir.
+- **Sesi**: ID diganti saat login/daftar; ganti kata sandi atau `user:reset-password` otomatis mengeluarkan perangkat lain.
+- **Batas percobaan**: login per email+IP (5/menit) dan per IP (20/5 menit); daftar, kode undangan, ganti sandi, ekspor,
+  `/demo`, dan langganan push juga dibatasi.
+- **Isolasi data**: semua query dibatasi `household_id`; kategori dan transaksi milik household lain tidak bisa diakses
+  (ada tes yang memastikannya). Properti publik Livewire yang bisa dipalsukan klien divalidasi/dibatasi di server.
+- **Push**: endpoint langganan hanya diterima dari layanan push resmi (FCM, Mozilla, Apple, Windows) agar server tidak
+  bisa dipaksa mengirim request ke alamat internal (SSRF).
+- **CSV**: sel yang diawali `= + - @` dinetralkan (CSV injection).
+- Akun demo bersifat hanya-baca dan domain emailnya (`@demo.moneygemen`) tidak bisa didaftarkan.
+
+Wajib di server produksi: `APP_DEBUG=false`, `APP_ENV=production`, `SESSION_SECURE_COOKIE=true`, dan jangan pernah
+mengunggah `.env`/`vendor` ke repo. Jalankan `composer audit` berkala untuk memeriksa kerentanan dependensi.
+
 ## Perintah admin
 
 | Perintah | Fungsi |

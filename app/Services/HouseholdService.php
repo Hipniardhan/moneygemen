@@ -56,6 +56,11 @@ class HouseholdService
             }
         }
 
+        // jangan pernah memasukkan pengunjung ke akun asli yang kebetulan memakai email demo
+        if (! $user->is_demo) {
+            throw new RuntimeException('Akun demo tidak tersedia.');
+        }
+
         $last = Transaction::where('household_id', $user->household_id)->max('date');
         if (! $last || Carbon::parse($last)->lt(today())) {
             DB::transaction(function () use ($user) {

@@ -95,7 +95,7 @@ class DemoReadOnlyTest extends TestCase
         $this->assertSame('Demo', $demo->fresh()->name);
 
         $this->actingAs($demo)->postJson('/push/subscribe', [
-            'endpoint' => 'https://push.example.com/x', 'keys' => ['p256dh' => 'k', 'auth' => 'a'],
+            'endpoint' => 'https://fcm.googleapis.com/fcm/send/x', 'keys' => ['p256dh' => 'k', 'auth' => 'a'],
         ])->assertForbidden();
         $this->assertSame(0, $demo->pushSubscriptions()->count());
 

@@ -3,6 +3,7 @@
 namespace App\Livewire;
 
 use App\Livewire\Concerns\BlocksDemo;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\RateLimiter;
 use Livewire\Attributes\Layout;
@@ -77,6 +78,8 @@ class Profile extends Component
 
         RateLimiter::clear($key);
         $user->update(['password' => $this->newPassword]);
+        // keluarkan semua perangkat lain; sesi ini tetap aktif (membutuhkan sandi yang kini berlaku)
+        Auth::logoutOtherDevices($this->newPassword);
         $this->reset(['currentPassword', 'newPassword', 'newPasswordConfirmation']);
 
         $this->dispatch('toast', message: 'Kata sandi diganti');

@@ -34,7 +34,16 @@ class AppController extends Controller
         abort_if($request->user()->is_demo, 403, 'Akun demo tidak bisa mengaktifkan notifikasi.');
 
         $data = $request->validate([
-            'endpoint' => 'required|url|max:2000',
+            'endpoint' => ['required', 'url', 'max:2000', function ($attr, $value, $fail) {
+                // Server nanti mengirim request ke endpoint ini. Tanpa pembatasan, user bisa
+                // mengarahkannya ke alamat internal (SSRF). Hanya terima layanan push resmi browser.
+                $parts = parse_url((string) $value);
+                $host = strtolower($parts['host'] ?? '');
+                $allowed = ['fcm.googleapis.com', 'push.services.mozilla.com', 'push.apple.com', 'notify.windows.com'];
+                $ok = ($parts['scheme'] ?? '') === 'https' && ! isset($parts['port']) && ! isset($parts['user'])
+                    && collect($allowed)->contains(fn ($d) => $host === $d || str_ends_with($host, '.' . $d));
+                $ok || $fail('Layanan notifikasi tidak dikenali.');
+            }],
             'keys.p256dh' => 'required|string|max:255',
             'keys.auth' => 'required|string|max:255',
         ]);

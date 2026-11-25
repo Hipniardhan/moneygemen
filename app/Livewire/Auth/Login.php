@@ -25,14 +25,19 @@ class Login extends Component
         $this->validate();
 
         $key = 'login|' . Str::lower($this->email) . '|' . request()->ip();
+        // batas per IP: menahan penebakan massal ke banyak email dari satu sumber
+        $ipKey = 'login-ip|' . request()->ip();
 
-        if (RateLimiter::tooManyAttempts($key, 5)) {
-            $this->addError('email', 'Terlalu banyak percobaan. Coba lagi dalam ' . RateLimiter::availableIn($key) . ' detik.');
-            return;
+        foreach ([[$key, 5], [$ipKey, 20]] as [$k, $max]) {
+            if (RateLimiter::tooManyAttempts($k, $max)) {
+                $this->addError('email', 'Terlalu banyak percobaan. Coba lagi dalam ' . RateLimiter::availableIn($k) . ' detik.');
+                return;
+            }
         }
 
         if (! Auth::attempt(['email' => Str::lower($this->email), 'password' => $this->password], $this->remember)) {
             RateLimiter::hit($key, 60);
+            RateLimiter::hit($ipKey, 300);
             $this->addError('email', 'Email atau kata sandi salah.');
             return;
         }

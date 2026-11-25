@@ -72,9 +72,11 @@ class Transactions extends Component
             default => $query->orderByDesc('date')->orderByDesc('id'),
         };
 
-        $items = $query->limit($this->perPage + 1)->get();
-        $hasMore = $items->count() > $this->perPage;
-        $items = $items->take($this->perPage);
+        // perPage adalah properti publik: klien bisa memalsukannya, jadi dibatasi di server
+        $perPage = min(max($this->perPage, 20), 500);
+        $items = $query->limit($perPage + 1)->get();
+        $hasMore = $items->count() > $perPage;
+        $items = $items->take($perPage);
 
         $categories = Category::where('household_id', $hid)
             ->when(in_array($this->type, ['income', 'expense'], true), fn ($q) => $q->where('type', $this->type))

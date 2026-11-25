@@ -39,6 +39,10 @@
     </div>
 
     <nav class="bottom-nav" aria-label="Navigasi utama">
+        <a href="{{ route('dashboard') }}" class="side-brand">
+            <img src="/icons/icon-192.png" alt="" width="34" height="34">
+            <span>MoneyGemen</span>
+        </a>
         <a href="{{ route('dashboard') }}" class="{{ request()->routeIs('dashboard') ? 'active' : '' }}">
             <svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m3 10 9-7 9 7v10a1 1 0 0 1-1 1h-5v-7H9v7H4a1 1 0 0 1-1-1z"/></svg>
             <span>Beranda</span>
@@ -49,6 +53,7 @@
         </a>
         <button type="button" class="fab" aria-label="Tambah transaksi" onclick="Livewire.dispatch('open-transaction')">
             <svg viewBox="0 0 24 24" width="26" height="26" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round"><path d="M12 5v14M5 12h14"/></svg>
+            <span class="fab-label">Catat transaksi</span>
         </button>
         <a href="{{ route('categories') }}" class="{{ request()->routeIs('categories') ? 'active' : '' }}">
             <svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20.6 13.4 13.4 20.6a2 2 0 0 1-2.8 0L3 13V3h10l7.6 7.6a2 2 0 0 1 0 2.8z"/><path d="M7.5 7.5h.01"/></svg>

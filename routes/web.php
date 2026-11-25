@@ -27,6 +27,6 @@ Route::middleware('auth')->group(function () {
     Route::get('/ekspor.csv', [\App\Http\Controllers\ExportController::class, 'csv'])->middleware('throttle:20,1')->name('export');
 
     Route::post('/keluar', [AppController::class, 'logout'])->name('logout');
-    Route::post('/push/subscribe', [AppController::class, 'subscribe']);
-    Route::post('/push/unsubscribe', [AppController::class, 'unsubscribe']);
+    Route::post('/push/subscribe', [AppController::class, 'subscribe'])->middleware('throttle:20,1');
+    Route::post('/push/unsubscribe', [AppController::class, 'unsubscribe'])->middleware('throttle:20,1');
 });

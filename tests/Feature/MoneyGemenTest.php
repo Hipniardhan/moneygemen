@@ -332,7 +332,7 @@ class MoneyGemenTest extends TestCase
     public function test_push_subscribe_and_unsubscribe(): void
     {
         $u = $this->user();
-        $payload = ['endpoint' => 'https://push.example.com/abc', 'keys' => ['p256dh' => 'k', 'auth' => 'a']];
+        $payload = ['endpoint' => 'https://fcm.googleapis.com/fcm/send/abc', 'keys' => ['p256dh' => 'k', 'auth' => 'a']];
 
         $this->actingAs($u)->postJson('/push/subscribe', $payload)->assertOk();
         $this->actingAs($u)->postJson('/push/subscribe', $payload)->assertOk(); // idempoten
