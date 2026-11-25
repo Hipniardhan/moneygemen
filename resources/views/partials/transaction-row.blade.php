@@ -7,5 +7,5 @@
             @if ($hasPartner) · dicatat oleh {{ $t->user_id === auth()->id() ? 'kamu' : $t->user->name }} @endif
         </span>
     </span>
-    <span class="tx-amount {{ $t->type }}">{{ $t->type === 'income' ? '+' : '−' }}Rp {{ number_format($t->amount, 0, ',', '.') }}</span>
+    <span class="tx-amount amt {{ $t->type }}">{{ $t->type === 'income' ? '+' : '−' }}Rp {{ number_format($t->amount, 0, ',', '.') }}</span>
 </button>

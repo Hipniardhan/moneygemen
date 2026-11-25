@@ -1,0 +1,13 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(python -)",
+      "Bash(sed -i 's/#190f6f/#14213d/g' app/Livewire/Categories.php app/Models/Category.php public/manifest.webmanifest resources/views/partials/head.blade.php)",
+      "Bash(sed -i 's/#f7ebe0/#f3e9dc/' public/manifest.webmanifest)",
+      "Bash(sed -i 's/content=\"#092634\" media/content=\"#0e1527\" media/' resources/views/partials/head.blade.php)",
+      "Bash(python - *)",
+      "Read(//c/Users/user/AppData/Local/Temp/claude/e6b0aed6eba6cc00/**)",
+      "Bash(taskkill //F //IM php.exe)"
+    ]
+  }
+}

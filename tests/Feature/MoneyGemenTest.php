@@ -368,6 +368,7 @@ class MoneyGemenTest extends TestCase
         $shared->forceFill(['created_at' => now()->subDays(5)])->save();
         // sisa akun demo versi lama (satu akun per kunjungan) harus dibersihkan
         $demo = app(HouseholdService::class)->register('Demo', 'demo-lama@demo.moneygemen', 'password123', true);
+        $this->tx($demo, 'Tagihan', 1000); // punya transaksi: urutan hapus harus benar (kategori dilindungi RESTRICT)
         $demo->forceFill(['created_at' => now()->subDays(2)])->save();
         PartnerNotification::create(['user_id' => $u->id, 'type' => 'x', 'message' => 'lama'])
             ->forceFill(['created_at' => now()->subDays(91)])->save();

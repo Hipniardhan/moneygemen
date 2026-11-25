@@ -179,7 +179,7 @@ class HouseholdService
 
             $invite->update(['used_at' => now(), 'used_by' => $me->id]);
 
-            $this->notifier->system($inviter, $me, 'partner_connected', "{$me->name} terhubung sebagai pasanganmu 🎉");
+            $this->notifier->system($inviter, $me, 'partner_connected', "{$me->name} terhubung sebagai pasanganmu.");
         });
     }
 

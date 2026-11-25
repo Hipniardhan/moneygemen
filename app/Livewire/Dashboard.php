@@ -30,6 +30,56 @@ class Dashboard extends Component
     #[On('transaction-saved')]
     public function refresh(): void {}
 
+    /**
+     * Irisan donat: 5 kategori teratas + "Lainnya" untuk sisanya.
+     * Geometri dihitung di sini (lingkaran r=48 pada kanvas 120x120, mulai dari jam 12).
+     *
+     * @param  \Illuminate\Support\Collection  $rows  baris teratas ber-total
+     * @return array<int, array<string, mixed>>
+     */
+    private function donut($rows, int $total): array
+    {
+        if ($total <= 0) {
+            return [];
+        }
+
+        $r = 48;
+        $circ = 2 * M_PI * $r;
+
+        $items = $rows->map(fn ($x) => [
+            'k' => (string) $x->id, 'name' => $x->name, 'icon' => $x->icon, 'color' => $x->color, 'amount' => (int) $x->total,
+        ])->values();
+
+        $rest = $total - $items->sum('amount');
+        if ($rest > 0) {
+            $items->push(['k' => 'rest', 'name' => 'Lainnya', 'icon' => '⋯', 'color' => '#94a3b8', 'amount' => $rest]);
+        }
+
+        $n = $items->count();
+        $acc = 0.0;
+        $segs = [];
+        foreach ($items as $it) {
+            $frac = $it['amount'] / $total;
+            $len = $frac * $circ;
+            $gap = $n > 1 ? min(2.0, $len * 0.3) : 0.0; // celah kecil antar irisan
+            $draw = max($len - $gap, 0.5);
+            $mid = ($acc + $frac / 2) * 2 * M_PI - M_PI / 2;
+
+            $segs[] = $it + [
+                'pct' => round($frac * 100),
+                'dash' => round($draw, 2),
+                'rest' => round($circ - $draw, 2),
+                'offset' => round(-$acc * $circ, 2),
+                'ix' => round(60 + $r * cos($mid), 2),
+                'iy' => round(60 + $r * sin($mid), 2),
+                'showIcon' => $frac >= 0.09, // irisan terlalu kecil tidak muat ikon; ikonnya ada di daftar
+            ];
+            $acc += $frac;
+        }
+
+        return $segs;
+    }
+
     public function render()
     {
         $hid = auth()->user()->household_id;
@@ -63,7 +113,14 @@ class Dashboard extends Component
             'income' => ($acc['income'] ?? collect())->take(5),
             'expense' => ($acc['expense'] ?? collect())->take(5),
         ];
-        $chartMax = max(1, (int) collect($chart)->flatten()->max('total'));
+        $chartTotals = [
+            'income' => (int) ($acc['income'] ?? collect())->sum('total'),
+            'expense' => (int) ($acc['expense'] ?? collect())->sum('total'),
+        ];
+        $donuts = [
+            'income' => $this->donut($chart['income'], $chartTotals['income']),
+            'expense' => $this->donut($chart['expense'], $chartTotals['expense']),
+        ];
 
         $recent = Transaction::with(['category', 'user'])
             ->where('household_id', $hid)
@@ -79,7 +136,8 @@ class Dashboard extends Component
             'top' => $top,
             'topMax' => max(1, (int) ($top->first()->total ?? 1)),
             'chart' => $chart,
-            'chartMax' => $chartMax,
+            'chartTotals' => $chartTotals,
+            'donuts' => $donuts,
             'recent' => $recent,
             'hasPartner' => (bool) auth()->user()->partner(),
         ])->title('Beranda');

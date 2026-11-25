@@ -1,5 +1,5 @@
 /* MoneyGemen service worker */
-const VERSION = 'mg-v2';
+const VERSION = 'mg-v6';
 const STATIC = `${VERSION}-static`;
 const PRECACHE = ['/offline', '/css/app.css', '/icons/icon-192.png'];
 
@@ -31,7 +31,7 @@ self.addEventListener('fetch', (event) => {
     // Aset statis: cache-first berdasarkan URL LENGKAP. Halaman memakai ?v=<waktu-ubah-file>,
     // jadi file yang berubah punya URL baru dan otomatis diambil dari jaringan.
     // ignoreSearch hanya dipakai sebagai cadangan saat benar-benar offline.
-    if (/^\/(css|js|icons)\//.test(url.pathname)) {
+    if (/^\/(css|js|icons|fonts)\//.test(url.pathname)) {
         event.respondWith(
             caches.open(STATIC).then(async (cache) => {
                 const exact = await cache.match(req);

@@ -1,7 +1,7 @@
 <div>
     <div class="auth-head">
-        <img src="/icons/icon-192.png" alt="" width="64" height="64">
-        <h1>MoneyGemen</h1>
+        <img src="/icons/logo-full.png?v={{ $iconV }}" alt="" class="auth-logo" width="280" height="266">
+        <h1 class="sr-only">MoneyGemen</h1>
         <p class="muted">Catat uang harian, sendiri atau berdua.</p>
     </div>
 

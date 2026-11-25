@@ -19,7 +19,7 @@ class Categories extends Component
     public ?int $editingId = null;
     public string $name = '';
     public string $type = 'expense';
-    public string $color = '#0f766e';
+    public string $color = '#14213d';
     public string $icon = '🏷️';
 
     public function setTab(string $tab): void

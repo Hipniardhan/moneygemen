@@ -20,7 +20,7 @@
     <div class="shell">
         <header class="topbar">
             <a href="{{ route('dashboard') }}" class="brand">
-                <img src="/icons/icon-192.png" alt="" width="28" height="28">
+                <img src="/icons/icon-192.png?v={{ $iconV }}" alt="" width="30" height="30">
                 <span>MoneyGemen</span>
             </a>
             <div class="topbar-actions">
@@ -40,7 +40,7 @@
 
     <nav class="bottom-nav" aria-label="Navigasi utama">
         <a href="{{ route('dashboard') }}" class="side-brand">
-            <img src="/icons/icon-192.png" alt="" width="34" height="34">
+            <img src="/icons/icon-192.png?v={{ $iconV }}" alt="" width="36" height="36">
             <span>MoneyGemen</span>
         </a>
         <a href="{{ route('dashboard') }}" class="{{ request()->routeIs('dashboard') ? 'active' : '' }}">

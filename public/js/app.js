@@ -1,4 +1,4 @@
-/* MoneyGemen — PWA: service worker, ajakan pasang, dan toggle push */
+/* MoneyGemen - PWA: service worker, ajakan pasang, dan toggle push */
 
 // --- Service worker -------------------------------------------------------
 if ('serviceWorker' in navigator) {

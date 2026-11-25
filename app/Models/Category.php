@@ -8,7 +8,7 @@ use Illuminate\Database\Eloquent\Relations\HasMany;
 class Category extends Model
 {
     public const COLORS = [
-        '#0f766e', '#16a34a', '#65a30d', '#ca8a04', '#ea580c',
+        '#14213d', '#16a34a', '#65a30d', '#ca8a04', '#ea580c',
         '#dc2626', '#db2777', '#9333ea', '#4f46e5', '#0284c7',
     ];
 

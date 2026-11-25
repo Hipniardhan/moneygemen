@@ -1,6 +1,6 @@
 <div>
     <div class="auth-head">
-        <img src="/icons/icon-192.png" alt="" width="64" height="64">
+        <img src="/icons/icon-192.png?v={{ $iconV }}" alt="" width="72" height="72">
         <h1>Buat akun</h1>
         <p class="muted">Gratis. Kamu langsung dapat 12 kategori bawaan.</p>
     </div>

@@ -46,6 +46,23 @@ Catatan Windows: bila `push:keys` gagal "Unable to create the key", set `OPENSSL
 
 Setelah mengubah `.env`, jalankan ulang `php artisan config:cache`.
 
+## Desain
+
+Palet krem + navy + emas, selaras dengan logo (token di bagian atas `public/css/app.css`, mode terang dan gelap):
+
+| Peran | Terang | Gelap |
+|---|---|---|
+| Utama (tombol, tautan, kartu saldo) | navy `#14213d` | emas pucat `#e3c77a` (kartu saldo tetap biru tua) |
+| Teks / latar / kartu | `#14213d` / `#f3e9dc` / `#fbf6ee` | `#f3e9dc` / `#0e1527` / `#16213a` |
+| Aksen tunggal (hanya aksi utama: tombol +) | emas `#d9a826`, tepi navy | emas `#d9a826` |
+| Pemasukan / pengeluaran (makna, tidak dihias) | `#166534` / `#a8431f` | `#4ade80` / `#fb923c` |
+
+- Teks di atas emas wajib navy (7,3:1). Emas di atas krem hanya sekitar 2:1, jadi tombolnya diberi tepi navy 2px.
+- Semua pasangan teks diukur terhadap WCAG AA (minimum 4,5:1): terendah 5,0:1 pada teks; batas kolom isian 4,1:1 (terang) dan 3,6:1 (gelap).
+- Font: Plus Jakarta Sans (lisensi OFL, file di `public/fonts/`), dimuat dari server sendiri, jadi tidak ada permintaan ke pihak ketiga
+  dan CSP tetap ketat. Ganti font cukup lewat `--font` di CSS.
+- Logo sumber dan ikon: lihat `resources/branding/` dan `scripts/make-icons.php`.
+
 ## Keamanan
 
 Sudah diterapkan di kode:
@@ -83,7 +100,7 @@ mengunggah `.env`/`vendor` ke repo. Jalankan `composer audit` berkala untuk meme
 - Halaman: `app/Livewire/{Dashboard,Transactions,TransactionForm,Categories,Partner,Profile,Report}.php`, `app/Livewire/Auth/`
 - Laporan bulanan: `app/Livewire/Report.php`; ekspor CSV: `app/Http/Controllers/ExportController.php`
 - PWA: `public/manifest.webmanifest`, `public/sw.js`, `public/js/app.js`, `resources/views/offline.blade.php`
-- Ikon dibuat ulang dengan `php scripts/make-icons.php`
+- Logo sumber: `resources/branding/logo-source.jpg`. Semua ikon (PWA, favicon, badge, logo halaman masuk) dibuat ulang dengan `php scripts/make-icons.php`
 
 ## Perilaku penting
 
